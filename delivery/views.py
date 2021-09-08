@@ -36,9 +36,12 @@ def render_pdf(request, delivery_id):
 	lines.append("")
 	lines.append("- VENDEDOR -")
 	lines.append("")
-
+	
 	lines.append("Vendedor: " + delivery_obj.seller.name)
-	lines.append("Telefone: " + delivery_obj.seller.phone)
+
+	if delivery_obj.seller.phone is not None:
+		lines.append("Telefone: " + delivery_obj.seller.phone)
+
 	lines.append("Morada: " + delivery_obj.seller.address)
 
 	lines.append("")
