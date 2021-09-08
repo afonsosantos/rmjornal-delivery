@@ -1,0 +1,1 @@
+web: gunicorn rmjornal_delivery.wsgi
