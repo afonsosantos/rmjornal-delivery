@@ -1,0 +1,1 @@
+six, django-flat-theme, django-flat-responsive, django-colorfield, django-admin-interface
