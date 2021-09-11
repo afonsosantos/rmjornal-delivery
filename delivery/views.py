@@ -8,6 +8,8 @@ import io
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
 from reportlab.lib.pagesizes import A5
+from reportlab.graphics.barcode import qr
+from reportlab.graphics.shapes import Drawing 
 
 today = datetime.today()
 
@@ -77,6 +79,22 @@ def render_pdf(request, delivery_id):
 	lines.append("")
 	lines.append("")
 	lines.append("ID Entrega: " + str(today.year) + "-" + str(delivery_id))
+
+	barcode_info = """
+		{0} \n
+		Unidades: {1} \n
+		Cliente: {2} \n
+		Data: {3}
+	""".format(delivery_obj.obj.description, delivery_obj.quantity, delivery_obj.seller.name, delivery_obj.date)
+
+	qr_code = qr.QrCodeWidget(barcode_info)
+	bounds = qr_code.getBounds()
+	width = bounds[2] - bounds[0]
+	height = bounds[3] - bounds[1]
+
+	d = Drawing(60, 60, transform=[60./width,0,0,60./height,0,0])
+	d.add(qr_code)
+	d.drawOn(c, 23, 480)
 
 
 	for line in lines:

@@ -38,4 +38,4 @@ class DeliveryAdmin(admin.ModelAdmin):
 		return "{0} €".format(obj.obj.seller_revenue * obj.quantity)
 
 	from .utils import delivery_report
-	delivery_report.short_description = "Print Delivery Report for selected record"
+	delivery_report.short_description = 'Print Delivery Report for selected record'
