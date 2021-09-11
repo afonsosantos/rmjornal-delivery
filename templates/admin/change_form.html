@@ -1,0 +1,21 @@
+{% extends 'admin/change_form.html' %}
+
+{% block submit_buttons_bottom %}
+    {{ block.super }}
+    {% if 'delivery' in request.path %}
+        <div class="submit-row">
+            <input type="button" value="Imprimir Folha de Entrega" id="delivery_report">
+        </div>
+
+        <script type="text/javascript">
+            document.getElementById("delivery_report").onclick = function(e) {
+                e.preventDefault();
+                
+                var pathArray = window.location.pathname.split('/');
+                var record_id = pathArray[3];
+
+                window.open('/app/pdf/' + record_id + '/', '_blank');
+            };
+        </script>
+    {% endif %}
+{% endblock %}

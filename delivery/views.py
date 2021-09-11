@@ -12,7 +12,7 @@ from reportlab.lib.pagesizes import A5
 today = datetime.today()
 
 
-# Render PDF
+# Render PDF for Delivery
 def render_pdf(request, delivery_id):
 	delivery_id = str(delivery_id)
 

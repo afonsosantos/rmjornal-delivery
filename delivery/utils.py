@@ -8,4 +8,4 @@ def delivery_report(self, request, queryset):
 	for delivery in queryset:
 		d_id = delivery.id
 
-	return redirect('/pdf/' + str(d_id))
+	return redirect('/app/pdf/' + str(d_id))
