@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'delivery',
+    'chartjs',
 ]
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'

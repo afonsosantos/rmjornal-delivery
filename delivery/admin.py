@@ -38,4 +38,8 @@ class DeliveryAdmin(admin.ModelAdmin):
 		return "{0} €".format(obj.obj.seller_revenue * obj.quantity)
 
 	from .utils import delivery_report
-	delivery_report.short_description = 'Print Delivery Report for selected record'
+	delivery_report.short_description = 'Imprimir Registo de Entrega'
+
+
+class CustomAdminSite(admin.AdminSite):
+	index_template = 'templates/admin/index.html'

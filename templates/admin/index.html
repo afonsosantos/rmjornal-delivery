@@ -1,0 +1,19 @@
+{% extends 'admin/index.html' %}
+{% load static %}
+
+{% block content %}
+  <div id="content-main">
+    <canvas id="deliveries_chart" width="45" height="15" style="margin-bottom: 40px;"></canvas>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+    <script type="text/javascript">
+      $.get('{% url "total_deliveries" %}', function(data) {
+        var ctx = $("#deliveries_chart").get(0).getContext("2d");
+        new Chart(ctx, {type: 'line', data: data, label: 'Entregas Totais por Mês'});
+      });
+    </script>
+
+    {{ block.super }}
+  </div>
+{% endblock %}

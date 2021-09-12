@@ -1,15 +1,19 @@
+import io
 from datetime import datetime, timedelta
-from django.shortcuts import get_object_or_404
-
-from .models import Delivery
 
 from django.http import FileResponse
-import io
+from django.shortcuts import get_object_or_404
+from django.db.models import Count
+from django.views.generic import TemplateView
+
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm
 from reportlab.lib.pagesizes import A5
 from reportlab.graphics.barcode import qr
-from reportlab.graphics.shapes import Drawing 
+from reportlab.graphics.shapes import Drawing
+from chartjs.views.lines import BaseLineChartView
+
+from .models import Delivery
 
 today = datetime.today()
 
@@ -108,3 +112,60 @@ def render_pdf(request, delivery_id):
 	buf.seek(0)
 
 	return FileResponse(buf, as_attachment=False, filename="registo_entrega-{0}.pdf".format(delivery_id))
+
+
+class TotalMonthlyDeliveries(BaseLineChartView):
+    def get_labels(self):
+        return [
+        	"Janeiro",
+        	"Fevereiro",
+        	"Março",
+        	"Abril",
+        	"Maio",
+        	"Junho",
+        	"Julho",
+        	"Agosto",
+        	"Setembro",
+        	"Outubro",
+        	"Novembro",
+        	"Dezembro"
+        ]
+
+    def get_providers(self):
+        return ["Total de Entregas Mensais"]
+
+    def get_data(self):
+        import datetime
+        from django.db.models import Count
+        from django.db.models.functions import TruncMonth
+        from delivery.models import Delivery
+
+        date = datetime.date.today()
+        items = Delivery.objects.filter(date__year=date.year).annotate(month=TruncMonth('date')).values(
+            'month').annotate(total=Count('id'))
+        totalMonth = {}
+
+        for i in range(0, 12):
+            totalMonth[i] = '0'
+
+        for item in items:
+            month = item["month"]
+            totalMonth[month.month]= item["total"]
+
+        return [
+        	[int(totalMonth.get(0)),
+        	int(totalMonth.get(1)),
+        	int(totalMonth.get(2)),
+        	int(totalMonth.get(3)),
+        	int(totalMonth.get(4)),
+        	int(totalMonth.get(5)),
+        	int(totalMonth.get(6)),
+        	int(totalMonth.get(7)),
+        	int(totalMonth.get(8)),
+        	int(totalMonth.get(9)),
+        	int(totalMonth.get(10)),
+        	int(totalMonth.get(11))]
+        ]
+
+line_chart = TemplateView.as_view(template_name='line_chart.html')
+line_chart_json = TotalMonthlyDeliveries.as_view()
