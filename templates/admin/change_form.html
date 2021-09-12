@@ -2,9 +2,9 @@
 
 {% block submit_buttons_bottom %}
     {{ block.super }}
-    {% if 'delivery' in request.path %}
+    {% if 'delivery/delivery' in request.path %}
         <div class="submit-row">
-            <input type="button" value="Imprimir Folha de Entrega" id="delivery_report">
+            <input type="button" value="Imprimir Registo de Entrega" id="delivery_report">
         </div>
 
         <script type="text/javascript">

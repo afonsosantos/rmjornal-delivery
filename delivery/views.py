@@ -64,6 +64,8 @@ def render_pdf(request, delivery_id):
 	lines.append("")
 
 	lines.append("Data da Recolha: " + str(delivery_obj.date + timedelta(days=14)))
+	lines.append("")
+	lines.append("Quantidade Recolhida: ___________")
 
 	lines.append("")
 	lines.append("")
