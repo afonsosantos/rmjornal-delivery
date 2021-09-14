@@ -10,7 +10,13 @@ admin.site.index_title = 'Aplicação de Gestão de Distribuição de Publicaç�
 class LeftoversInline(admin.TabularInline):
 	model = Leftovers
 	max_num = 1
+	readonly_fields = ['total_vendidos']
 
+	def total_vendidos(self, obj):
+		if obj.quantity is None:
+			return ''
+		else:
+			return obj.delivery.quantity - obj.quantity
 
 @admin.register(Leftovers)
 class LeftoversAdmin(admin.ModelAdmin):
@@ -33,6 +39,7 @@ class DeliveryAdmin(admin.ModelAdmin):
 	readonly_fields = ['seller_revenue_total']
 	actions = ['delivery_report']
 	inlines = [LeftoversInline]
+	list_filter = ('date', 'seller', 'obj')
 
 	def seller_revenue_total(self, obj):
 		return "{0} €".format(obj.obj.seller_revenue * obj.quantity)
